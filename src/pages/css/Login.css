@@ -1,0 +1,18 @@
+input{
+    margin-bottom: 10px;
+}
+
+a{
+    text-decoration: none;
+}
+
+.login-form{
+    width: 450px;
+    padding: 20px 50px 50px 50px;
+}
+
+.logo{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
