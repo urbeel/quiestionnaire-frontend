@@ -104,7 +104,7 @@ const AllResponses = () => {
         return (
             <div>
                 <SockJsClient
-                    url='http://localhost:8080/ws'
+                    url={`${process.env.REACT_APP_API_URL}/ws`}
                     headers={
                         authHeader
                     }
