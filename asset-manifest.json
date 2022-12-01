@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/questionnaire-frontend/static/css/main.d2bcfec7.css",
+    "main.js": "/questionnaire-frontend/static/js/main.5fb9cfaf.js",
+    "index.html": "/questionnaire-frontend/index.html",
+    "main.d2bcfec7.css.map": "/questionnaire-frontend/static/css/main.d2bcfec7.css.map",
+    "main.5fb9cfaf.js.map": "/questionnaire-frontend/static/js/main.5fb9cfaf.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d2bcfec7.css",
+    "static/js/main.5fb9cfaf.js"
+  ]
+}
