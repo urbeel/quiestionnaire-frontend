@@ -19,8 +19,13 @@ const AllResponses = () => {
                 api.get("/responses/size", {
                     params: {"questionnaireId": localStorage.getItem("questionnaireId")}
                 }).then((response) => {
-                    setTotalSize(response.data);
-                    setPageCount(Math.floor(totalSize / pageSize) + 1)
+                    const fieldsSize = response.data;
+                    setTotalSize(fieldsSize);
+                    if (fieldsSize % pageSize === 0) {
+                        setPageCount(Math.floor(response.data / pageSize));
+                    } else {
+                        setPageCount(Math.floor((response.data / pageSize) + 1));
+                    }
                 })
                 api.get("/fields", {
                     params: {

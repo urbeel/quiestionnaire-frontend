@@ -3,13 +3,13 @@ import {Button, Modal} from "react-bootstrap";
 import api from "../http";
 
 const DeleteFieldModal = (props) => {
-    const [label,setLabel] = useState("");
+    const [label, setLabel] = useState("");
 
-    useEffect(()=>{
-        if (props.field!=null){
+    useEffect(() => {
+        if (props.field != null) {
             setLabel(props.field.label);
         }
-    },[props.field])
+    }, [props.field])
 
     const handleClose = () => {
         props.setShowModal(false);
@@ -18,6 +18,9 @@ const DeleteFieldModal = (props) => {
     const deleteBtnHandler = () => {
         api.delete(`/fields/${props.field.id}`)
             .then(() => {
+                if (props.fieldsSizeOnPage === 1) {
+                    props.setCurrentPage(0);
+                }
                 props.setReloadFields(!props.reloadFields)
                 props.setShowModal(false);
             })

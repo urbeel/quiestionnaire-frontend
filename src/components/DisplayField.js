@@ -10,7 +10,7 @@ const DisplayField = (props) => {
 
     useEffect(() => {
         setValue(`fieldAnswers.${index}.fieldId`, field.id);
-    },[])
+    }, [])
 
     const getCheckboxLabel = () => {
         if (field.isRequired) {

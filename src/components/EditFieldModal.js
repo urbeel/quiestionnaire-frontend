@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
 import {useForm} from "react-hook-form";
 import api from "../http";
@@ -7,22 +7,30 @@ import FieldForm from "./FieldForm";
 const EditFieldModal = (props) => {
 
     const {register, handleSubmit, reset, formState: {errors}} = useForm({
-        defaultValues:props.field
+        defaultValues: props.field
     });
 
-    useEffect(()=>{
+    useEffect(() => {
         reset(props.field);
-    },[])
+    }, [props.showModal])
 
     const handleCloseModal = () => {
         reset();
         props.setShowModal(false);
     }
 
+    const strToEnum = (str) => {
+        return str.replaceAll(' ', '_').toUpperCase();
+    }
+
     const handleEditField = (field) => {
-        field.options=parseOptionsStr(field.options);
+        if (field.options) {
+            field.options = parseOptionsStr(field.options);
+        }
+        field.type = strToEnum(field.type);
         field.questionnaireId = localStorage.getItem("questionnaireId");
-        api.put( `/fields/${props.field.id}`, field).then((response) => {
+        console.log(field);
+        api.put(`/fields/${props.field.id}`, field).then((response) => {
             if (response.status === 200) {
                 props.setReloadFields(!props.reloadFields);
                 handleCloseModal();
@@ -51,7 +59,7 @@ const EditFieldModal = (props) => {
                 <FieldForm
                     register={register}
                     errors={errors}
-                    field = {props.field}
+                    field={props.field}
                 />
                 <Modal.Footer>
                     <Button variant="light" onClick={handleCloseModal}>

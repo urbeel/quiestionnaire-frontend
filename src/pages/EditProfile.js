@@ -9,7 +9,7 @@ import {logout} from "../service/UserService";
 
 const EditProfile = () => {
     const {register, handleSubmit, reset, formState: {errors, isValid}} = useForm({
-        mode:"onBlur"
+        mode: "onBlur"
     });
     const navigate = useNavigate();
     const [showAlert, setShowAlert] = useState(false);
@@ -27,7 +27,7 @@ const EditProfile = () => {
         refactorUserInfo(userinfo);
         api.put(`/users/${localStorage.getItem("userId")}`, userinfo)
             .then((response) => {
-                if (response.status===200){
+                if (response.status === 200) {
                     reset();
                     logout(navigate);
                 }
@@ -73,7 +73,8 @@ const EditProfile = () => {
                                         }
                                     })}
                                 />
-                                {errors.firstname && <Form.Text className="text-danger">{errors.firstname.message}</Form.Text>}
+                                {errors.firstname &&
+                                    <Form.Text className="text-danger">{errors.firstname.message}</Form.Text>}
                             </FormGroup>
                             <FormGroup>
                                 <Form.Label className={"text-secondary"}>Last Name</Form.Label>
@@ -85,7 +86,8 @@ const EditProfile = () => {
                                         }
                                     })}
                                 />
-                                {errors.lastname && <Form.Text className="text-danger">{errors.lastname.message}</Form.Text>}
+                                {errors.lastname &&
+                                    <Form.Text className="text-danger">{errors.lastname.message}</Form.Text>}
                             </FormGroup>
                             <FormGroup>
                                 <Form.Label className={"text-secondary"}>Email <span

@@ -6,7 +6,7 @@ import api from "../http";
 import {useNavigate} from "react-router-dom";
 
 const ChangePassword = () => {
-    const {register, handleSubmit,reset, formState: {errors, isValid}} = useForm({
+    const {register, handleSubmit, reset, formState: {errors, isValid}} = useForm({
         mode: "onBlur"
     });
     const navigate = useNavigate();

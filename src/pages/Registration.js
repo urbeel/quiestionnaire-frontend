@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import "./css/Registration.css"
-import {Alert, Button, Card, Container, Form, FormGroup, Row} from "react-bootstrap";
+import {Alert, Button, Card, Container, Form, Row} from "react-bootstrap";
 import {Link, useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import api from "../http";

@@ -10,7 +10,7 @@ import EditFieldModal from "../components/EditFieldModal";
 import DeleteFieldModal from "../components/DeleteFieldModal";
 
 const AllFields = () => {
-    const [fields, setFields] = useState(null);
+    const [fields, setFields] = useState([]);
     const [page, setPage] = useState(0);
     const [pageCount, setPageCount] = useState(1);
     const [pageSize, setPageSize] = useState(10);
@@ -25,8 +25,13 @@ const AllFields = () => {
         api.get("/fields/size", {
             params: {"questionnaireId": localStorage.getItem("questionnaireId")}
         }).then((response) => {
-            setTotalSize(response.data);
-            setPageCount(Math.floor(totalSize / pageSize) + 1)
+            const fieldsSize = response.data;
+            setTotalSize(fieldsSize);
+            if (fieldsSize % pageSize === 0) {
+                setPageCount(Math.floor(response.data / pageSize));
+            } else {
+                setPageCount(Math.floor((response.data / pageSize) + 1));
+            }
         })
         api.get("/fields", {
             params: {
@@ -174,6 +179,8 @@ const AllFields = () => {
                 setShowModal={setShowDeleteModal}
                 setReloadFields={setReloadFields}
                 reloadFields={reloadFields}
+                fieldsSizeOnPage={fields.length}
+                setCurrentPage={setPage}
                 field={selectedField}
             />
         </div>
