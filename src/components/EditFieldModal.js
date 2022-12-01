@@ -15,7 +15,7 @@ const EditFieldModal = (props) => {
     }, [props.showModal])
 
     const handleCloseModal = () => {
-        reset();
+        //    reset();
         props.setShowModal(false);
     }
 
@@ -24,12 +24,13 @@ const EditFieldModal = (props) => {
     }
 
     const handleEditField = (field) => {
+        console.log(field);
         if (field.options) {
             field.options = parseOptionsStr(field.options);
         }
+        console.log(field);
         field.type = strToEnum(field.type);
         field.questionnaireId = localStorage.getItem("questionnaireId");
-        console.log(field);
         api.put(`/fields/${props.field.id}`, field).then((response) => {
             if (response.status === 200) {
                 props.setReloadFields(!props.reloadFields);
@@ -42,9 +43,14 @@ const EditFieldModal = (props) => {
     }
 
     const parseOptionsStr = (optionsStr) => {
-        if (typeof optionsStr !== 'undefined' && !optionsStr && !optionsStr.trim().isEmpty()) {
-            const options = optionsStr.split('\n');
-            return options.map(elem => elem.trim()).filter(elm => elm);
+        if (typeof optionsStr !== 'undefined') {
+            optionsStr = optionsStr.trim();
+            if (!optionsStr.isEmpty) {
+                const options = optionsStr.split('\n');
+                return options.map(elem => elem.trim()).filter(elm => elm);
+            } else {
+                return null;
+            }
         } else {
             return null;
         }

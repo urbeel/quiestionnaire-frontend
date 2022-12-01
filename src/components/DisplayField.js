@@ -62,7 +62,7 @@ const DisplayField = (props) => {
                     {...register(`fieldAnswers.${index}.value`, {required: field.isRequired})}
                 >
                     <option value="" disabled selected hidden>Select option</option>
-                    {field.options.map((option, i) =>
+                    {(field.options && field.options.length !== 0) && field.options.map((option, i) =>
                         <option key={i}>{option}</option>
                     )}
                 </Form.Select>
