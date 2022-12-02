@@ -31,7 +31,9 @@ const DeleteFieldModal = (props) => {
             <Modal.Header closeButton>
                 <Modal.Title>Are you sure?</Modal.Title>
             </Modal.Header>
-            <Modal.Body>Do you wanna delete field {label}?</Modal.Body>
+            <Modal.Body>Do you wanna delete field {label}?
+                <span className="text-danger"> All answers on this field will be deleted.</span>
+            </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
                     Cancel

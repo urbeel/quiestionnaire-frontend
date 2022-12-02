@@ -33,7 +33,7 @@ const NavBar = () => {
     return (
         <Navbar bg="white" className="shadow-sm">
             <Container>
-                <Navbar.Brand href="/fields">
+                <Navbar.Brand as={Link} to="/fields">
                     <img src="/logo.png"
                          alt="logo"
                          height={40}

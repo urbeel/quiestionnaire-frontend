@@ -15,7 +15,6 @@ const EditFieldModal = (props) => {
     }, [props.showModal])
 
     const handleCloseModal = () => {
-        //    reset();
         props.setShowModal(false);
     }
 
@@ -25,12 +24,14 @@ const EditFieldModal = (props) => {
 
     const handleEditField = (field) => {
         console.log(field);
-        if (field.options) {
-            field.options = parseOptionsStr(field.options);
-        }
-        console.log(field);
         field.type = strToEnum(field.type);
+        if (field.options && (field.type === "RADIO_BUTTON" || field.type === "COMBOBOX")) {
+            field.options = parseOptionsStr(field.options);
+        } else {
+            delete field.options;
+        }
         field.questionnaireId = localStorage.getItem("questionnaireId");
+        console.log(field);
         api.put(`/fields/${props.field.id}`, field).then((response) => {
             if (response.status === 200) {
                 props.setReloadFields(!props.reloadFields);

@@ -174,6 +174,11 @@ const AllResponses = () => {
                                             min="10"
                                             step="10"
                                             max="50"
+                                            onKeyDown={(e) => {
+                                                if (e.key !== "ArrowUp" && e.key !== "ArrowDown") {
+                                                    e.preventDefault();
+                                                }
+                                            }}
                                             defaultValue={pageSize}
                                             style={{width: 70}}
                                             onChange={changePageSizeHandler}
