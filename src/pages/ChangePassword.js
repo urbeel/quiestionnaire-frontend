@@ -6,7 +6,7 @@ import api from "../http";
 import {useNavigate} from "react-router-dom";
 
 const ChangePassword = () => {
-    const {register, handleSubmit, reset, formState: {errors, isValid}} = useForm({
+    const {register, handleSubmit, reset, watch, formState: {errors, isValid}} = useForm({
         mode: "onBlur"
     });
     const navigate = useNavigate();
@@ -16,13 +16,16 @@ const ChangePassword = () => {
 
     const changePasswordHandler = (passwords) => {
         passwords.userId = localStorage.getItem("userId");
+        delete passwords.confirmPassword;
         api.patch("/auth/password", passwords)
-            .then(res => {
-                setAlertVariant("success");
-                setAlertMessage("Password was successfully changed.")
-                setShowAlert(true);
-                reset();
-                setTimeout(() => navigate("/fields"), 2000);
+            .then((res) => {
+                if (res.status === 200) {
+                    setAlertVariant("success");
+                    setAlertMessage("Password was successfully changed.")
+                    setShowAlert(true);
+                    reset();
+                    setTimeout(() => navigate("/fields"), 2000);
+                }
             })
             .catch((reason => {
                 console.error(reason);
@@ -108,7 +111,12 @@ const ChangePassword = () => {
                                             maxLength: {
                                                 value: 16,
                                                 message: "Max length of password is 16!"
-                                            }
+                                            },
+                                            validate: (value => {
+                                                if (watch("password") !== value) {
+                                                    return "Your passwords do no match";
+                                                }
+                                            })
                                         })}
                                     />
                                     {errors.confirmPassword &&

@@ -6,7 +6,7 @@ import {useForm} from "react-hook-form";
 import api from "../http";
 
 const Login = () => {
-    const {register, handleSubmit, reset, formState: {errors, isValid}} = useForm(
+    const {register, handleSubmit, reset, watch, formState: {errors, isValid}} = useForm(
         {
             mode: "onBlur",
             defaultValues: {
@@ -22,6 +22,7 @@ const Login = () => {
 
     const onSubmit = signupData => {
         refactorSignupData(signupData);
+        delete signupData.confirmPassword;
         api.post("/auth/signup", signupData)
             .then((response) => {
                 if (response.status === 200) {
@@ -112,7 +113,12 @@ const Login = () => {
                                           maxLength: {
                                               value: 16,
                                               message: "Max length of password is 16!"
-                                          }
+                                          },
+                                          validate: (value => {
+                                              if (watch("password") !== value) {
+                                                  return "Your passwords do no match";
+                                              }
+                                          })
                                       })}/>
                         {errors.confirmPassword &&
                             <Form.Text className="text-danger">{errors.confirmPassword.message}</Form.Text>}
