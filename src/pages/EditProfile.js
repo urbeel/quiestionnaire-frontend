@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Alert, Button, Card, Container, Form, FormGroup} from "react-bootstrap";
 import NavBar from "../components/NavBar";
 import "./css/EditProfile.css"
@@ -14,6 +14,16 @@ const EditProfile = () => {
     const navigate = useNavigate();
     const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState(null);
+
+    useEffect(() => {
+        api.get(`/users/${localStorage.getItem("userId")}`)
+            .then(response => {
+                reset(response.data)
+            }, reason => {
+                console.error(reason);
+                alert("Error while reading user!")
+            })
+    }, [])
 
     const refactorUserInfo = (userInfo) => {
         for (let field in userInfo) {

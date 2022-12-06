@@ -5,13 +5,22 @@ import api from "../http";
 import FieldForm from "./FieldForm";
 
 const EditFieldModal = (props) => {
+    const field = props.field;
 
     const {register, handleSubmit, reset, formState: {errors}} = useForm({
-        defaultValues: props.field
+        defaultValues: field
     });
 
     useEffect(() => {
-        reset(props.field);
+        if (field) {
+            reset({
+                "label": field.label,
+                "isActive": field.isActive,
+                "isRequired": field.isRequired,
+                "options": field.options,
+                "type":strToEnum(field.type)
+            });
+        }
     }, [props.showModal])
 
     const handleCloseModal = () => {
@@ -19,11 +28,14 @@ const EditFieldModal = (props) => {
     }
 
     const strToEnum = (str) => {
-        return str.replaceAll(' ', '_').toUpperCase();
+        if (str) {
+            return str.replaceAll(' ', '_').toUpperCase();
+        } else {
+            return null;
+        }
     }
 
     const handleEditField = (field) => {
-        console.log(field);
         field.type = strToEnum(field.type);
         if (field.options && (field.type === "RADIO_BUTTON" || field.type === "COMBOBOX")) {
             field.options = parseOptionsStr(field.options);
@@ -31,7 +43,6 @@ const EditFieldModal = (props) => {
             delete field.options;
         }
         field.questionnaireId = localStorage.getItem("questionnaireId");
-        console.log(field);
         api.put(`/fields/${props.field.id}`, field).then((response) => {
             if (response.status === 200) {
                 props.setReloadFields(!props.reloadFields);
@@ -66,7 +77,7 @@ const EditFieldModal = (props) => {
                 <FieldForm
                     register={register}
                     errors={errors}
-                    field={props.field}
+                    field={field}
                 />
                 <Modal.Footer>
                     <Button variant="light" onClick={handleCloseModal}>

@@ -59,6 +59,7 @@ const DisplayField = (props) => {
             case "Combobox":
                 return <Form.Select
                     required={field.isRequired}
+                    defaultValue={""}
                     {...register(`fieldAnswers.${index}.value`, {required: field.isRequired})}
                 >
                     <option value="" disabled selected hidden>Select option</option>

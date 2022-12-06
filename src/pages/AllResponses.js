@@ -37,6 +37,7 @@ const AllResponses = () => {
                             setFields(response.data.sort(function (a, b) {
                                 return a.id - b.id;
                             }));
+                            console.log(response.data);
                             api.get("/responses", {
                                 params: {
                                     "size": pageSize,
@@ -54,8 +55,7 @@ const AllResponses = () => {
                         }
                     })
             }, [page, pageSize, reloadPage]
-        )
-        ;
+        );
 
         const getValue = (fieldAnswers, columnIndex) => {
             const fieldAnswer = fieldAnswers.find(fieldAnswer => fieldAnswer.fieldId === fields[columnIndex].id);
@@ -65,11 +65,11 @@ const AllResponses = () => {
             if (fieldAnswer && fieldAnswer !== "") {
                 const value = fieldAnswer.value;
                 if (value && !value.isEmpty) {
-                    const date = moment(value);
-                    if (date.toString() !== "Invalid date") {
-                        return date.format("DD MMM yyyy");
+                    if (fields[columnIndex].type === "Date") {
+                        return moment(value).format("DD MMM yyyy");
                     } else {
                         return value;
+
                     }
                 } else {
                     return "N/A";
@@ -144,7 +144,7 @@ const AllResponses = () => {
                                     <thead>
                                     <tr>
                                         {fields.map((field, i) =>
-                                            <th style={{width: 250}}>{field.label}</th>
+                                            <th key={field.id} style={{width: 250}}>{field.label}</th>
                                         )}
                                     </tr>
                                     </thead>
@@ -152,7 +152,7 @@ const AllResponses = () => {
                                     {responses.map((response, responseIndex) => {
                                         return (<tr key={response.id}>
                                             {fields.map((field, fieldIndex) =>
-                                                <td style={{width: 600}}
+                                                <td key={field.id} style={{width: 600}}
                                                     className="col-12">{getValue(response.fieldAnswers, fieldIndex)}</td>
                                             )}
                                         </tr>)
@@ -187,7 +187,7 @@ const AllResponses = () => {
                                 </Row>
                             </Card.Body>
                             : <Card.Body>
-                                <h1 className={"text-center my-5"}>No fields</h1>
+                                <h1 className={"text-center my-5"}>No responses</h1>
                             </Card.Body>}
                     </Card>
                 </Container>

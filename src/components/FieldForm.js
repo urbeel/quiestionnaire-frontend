@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Col, Form, FormGroup, Modal, Row} from "react-bootstrap";
+import Select from "./Select";
 
 const FieldForm = (props) => {
         const [showOptions, setShowOptions] = useState(false);
@@ -12,17 +13,12 @@ const FieldForm = (props) => {
         const register = props.register;
         const errors = props.errors;
 
-        const handleShowOptions = (e) => {
-            if (e.target.value === "COMBOBOX" || e.target.value === "RADIO_BUTTON") {
+        const handleShowOptions = (type) => {
+            if (type === "COMBOBOX" || type === "RADIO_BUTTON") {
                 setShowOptions(true);
             } else {
                 setShowOptions(false);
-
             }
-        }
-
-        const strToEnum = (str) => {
-            return str.replaceAll(' ', '_').toUpperCase();
         }
 
         return (
@@ -41,17 +37,24 @@ const FieldForm = (props) => {
                 <FormGroup as={Row} className="mb-2">
                     <Form.Label column sm="2">Type<span style={{color: "red"}}>*</span></Form.Label>
                     <Col sm="8">
-                        <Form.Select
-                            {...register("type", {onChange: handleShowOptions})}
-                        >
-                            {
-                                fieldTypes.map((type, i) =>
-                                    <option key={i} value={strToEnum(type)}>{type}</option>
-                                )
-                            }
-                        </Form.Select>
+                        {props.field ?
+                            <Select
+                                fieldTypes={fieldTypes}
+                                defaultType={props.field.type}
+                                register={register}
+                                errors={errors}
+                                handleShowOptions={handleShowOptions}
+                            />
+                            :
+                            <Select
+                                fieldTypes={fieldTypes}
+                                register={register}
+                                errors={errors}
+                                handleShowOptions={handleShowOptions}
+                            />
+                        }
+
                     </Col>
-                    {errors.type && <Form.Text style={{color: "red"}}>This field is required</Form.Text>}
                 </FormGroup>
                 {
                     showOptions && <FormGroup as={Row} className="mb-2">
