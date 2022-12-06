@@ -65,11 +65,10 @@ const AllResponses = () => {
             if (fieldAnswer && fieldAnswer !== "") {
                 const value = fieldAnswer.value;
                 if (value && !value.isEmpty) {
-                    if (fields[columnIndex].type === "Date") {
+                    if (fields[columnIndex].type === "Date" && moment(value,'YYYY-MM-DD',true).isValid()) {
                         return moment(value).format("DD MMM yyyy");
                     } else {
                         return value;
-
                     }
                 } else {
                     return "N/A";
