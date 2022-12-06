@@ -93,24 +93,24 @@ const AllFields = () => {
                     </Card.Header>
                     {(fields && fields.length !== 0) ?
                         <Card.Body>
-                            <Table striped hover>
+                            <Table style={{tableLayout: "fixed"}} striped hover>
                                 <thead>
                                 <tr>
-                                    <th>Label</th>
-                                    <th>Type</th>
-                                    <th>Required</th>
-                                    <th>Is Active</th>
-                                    <th></th>
+                                    <th style={{width: 400}}>Label</th>
+                                    <th style={{width: 150}}>Type</th>
+                                    <th style={{width: 100}}>Required</th>
+                                    <th style={{width: 100}}>Is Active</th>
+                                    <th style={{width: 250}}></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {fields.map((field, i) => {
                                     return (<tr key={field.id}>
-                                        <td>{field.label}</td>
-                                        <td>{field.type}</td>
-                                        <td>{field.isRequired.toString()}</td>
-                                        <td>{field.isActive.toString()}</td>
-                                        <td align="right">
+                                        <td style={{width: 250}}>{field.label}</td>
+                                        <td style={{width: 250}}>{field.type}</td>
+                                        <td style={{width: 250}}>{field.isRequired.toString()}</td>
+                                        <td style={{width: 250}}>{field.isActive.toString()}</td>
+                                        <td style={{width: 250}} align="right">
                                             <Button
                                                 variant="link"
                                                 onClick={() => {

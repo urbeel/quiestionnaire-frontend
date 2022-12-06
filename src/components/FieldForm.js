@@ -29,10 +29,20 @@ const FieldForm = (props) => {
                         <Form.Control
                             type="text"
                             placeholder="Enter label"
-                            {...register("label", {required: true})}
+                            {...register("label", {
+                                required: "Label is required",
+                                maxLength:{
+                                    value:100,
+                                    message:"Max length of label is 100 characters"
+                                },
+                                minLength:{
+                                    value:1,
+                                    message:"Min length of label is 1 character"
+                                }
+                            })}
                         />
                     </Col>
-                    {errors.label && <Form.Text style={{color: "red"}}>This field is required</Form.Text>}
+                    {errors.label && <Form.Text style={{color: "red"}}>{errors.label.message}</Form.Text>}
                 </FormGroup>
                 <FormGroup as={Row} className="mb-2">
                     <Form.Label column sm="2">Type<span style={{color: "red"}}>*</span></Form.Label>
@@ -64,10 +74,12 @@ const FieldForm = (props) => {
                                 as={"textarea"}
                                 rows={"5"}
                                 placeholder="Enter options"
-                                {...register("options", {required: true})}
+                                {...register("options", {
+                                    required: "Options is required"
+                                })}
                             />
                         </Col>
-                        {errors.options && <Form.Text style={{color: "red"}}>This field is required</Form.Text>}
+                        {errors.options && <Form.Text style={{color: "red"}}>{errors.options.message}</Form.Text>}
                     </FormGroup>
                 }
                 <Row>

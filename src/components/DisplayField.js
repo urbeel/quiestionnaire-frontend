@@ -18,6 +18,10 @@ const DisplayField = (props) => {
                 {field.label}
                 <span style={{color: "red", marginLeft: 1}}>*</span>
             </span>
+        } else {
+            return <span className="text-secondary">
+                {field.label}
+            </span>
         }
     }
 
@@ -82,7 +86,10 @@ const DisplayField = (props) => {
     return (
         <FormGroup className="mb-3">
             {field.type !== "Checkbox" &&
-                <Form.Label className="text-secondary">
+                <Form.Label
+                    className="text-secondary"
+                    style={{wordBreak: "break-word"}}
+                >
                     {field.label}
                     {field.isRequired && <span style={{color: "red", marginLeft: 1}}>*</span>}
                 </Form.Label>
