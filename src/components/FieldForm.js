@@ -12,6 +12,9 @@ const FieldForm = (props) => {
             'Date',]);
         const register = props.register;
         const errors = props.errors;
+        const isValidOptions = props.isValidOptions;
+        const setIsValidOptions = props.setIsValidOptions;
+        const parseOptionsStr = props.parseOptionsStr;
 
         const handleShowOptions = (type) => {
             if (type === "COMBOBOX" || type === "RADIO_BUTTON") {
@@ -19,6 +22,16 @@ const FieldForm = (props) => {
             } else {
                 setShowOptions(false);
             }
+        }
+
+        const checkValidityOptions = (e) => {
+          const options = e.target.value;
+          const optionsNew=parseOptionsStr(options);
+          if (optionsNew) {
+              setIsValidOptions(true);
+          }else {
+              setIsValidOptions(false);
+          }
         }
 
         return (
@@ -75,11 +88,13 @@ const FieldForm = (props) => {
                                 rows={"5"}
                                 placeholder="Enter options"
                                 {...register("options", {
-                                    required: "Options is required"
+                                    required: "Options is required",
+                                    onChange: (e) => {checkValidityOptions(e)},
                                 })}
                             />
                         </Col>
                         {errors.options && <Form.Text style={{color: "red"}}>{errors.options.message}</Form.Text>}
+                        {!isValidOptions && <Form.Text style={{color: "red"}}>Invalid options</Form.Text>}
                     </FormGroup>
                 }
                 <Row>

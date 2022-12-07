@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
 import {useForm} from "react-hook-form";
 import api from "../http";
@@ -6,6 +6,7 @@ import FieldForm from "./FieldForm";
 
 const EditFieldModal = (props) => {
     const field = props.field;
+    const [isValidOptions, setIsValidOptions] = useState(true);
 
     const {register, handleSubmit, reset, formState: {errors}} = useForm({
         defaultValues: field
@@ -20,6 +21,7 @@ const EditFieldModal = (props) => {
                 "options": field.options,
                 "type":strToEnum(field.type)
             });
+            setIsValidOptions(true);
         }
     }, [props.showModal])
 
@@ -39,6 +41,13 @@ const EditFieldModal = (props) => {
         field.type = strToEnum(field.type);
         if (field.options && (field.type === "RADIO_BUTTON" || field.type === "COMBOBOX")) {
             field.options = parseOptionsStr(field.options);
+            if (!field.options) {
+                delete field.options;
+                setIsValidOptions(false);
+                return;
+            }else {
+                setIsValidOptions(true);
+            }
         } else {
             delete field.options;
         }
@@ -57,7 +66,7 @@ const EditFieldModal = (props) => {
     const parseOptionsStr = (optionsStr) => {
         if (typeof optionsStr !== 'undefined') {
             optionsStr = optionsStr.trim();
-            if (!optionsStr.isEmpty) {
+            if (optionsStr && !optionsStr.isEmpty) {
                 const options = optionsStr.split('\n');
                 return options.map(elem => elem.trim()).filter(elm => elm);
             } else {
@@ -78,6 +87,9 @@ const EditFieldModal = (props) => {
                     register={register}
                     errors={errors}
                     field={field}
+                    isValidOptions={isValidOptions}
+                    setIsValidOptions={setIsValidOptions}
+                    parseOptionsStr={parseOptionsStr}
                 />
                 <Modal.Footer>
                     <Button variant="light" onClick={handleCloseModal}>

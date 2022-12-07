@@ -37,7 +37,6 @@ const AllResponses = () => {
                             setFields(response.data.sort(function (a, b) {
                                 return a.id - b.id;
                             }));
-                            console.log(response.data);
                             api.get("/responses", {
                                 params: {
                                     "size": pageSize,

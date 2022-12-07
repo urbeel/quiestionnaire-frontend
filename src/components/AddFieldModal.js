@@ -1,14 +1,16 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
 import {useForm} from "react-hook-form";
 import api from "../http";
 import FieldForm from "./FieldForm";
 
 const AddFieldModal = (props) => {
-    const {register, handleSubmit, reset, formState: {errors}} = useForm();
+    const {register, handleSubmit, setError, reset, formState: {errors}} = useForm();
+    const [isValidOptions, setIsValidOptions] = useState(true);
 
     useEffect(() => {
         reset();
+        setIsValidOptions(true);
     }, [props.showModal])
 
     const handleCloseModal = () => {
@@ -18,6 +20,13 @@ const AddFieldModal = (props) => {
     const handleSaveField = (field) => {
         if (field.options) {
             field.options = parseOptionsStr(field.options);
+            if (!field.options) {
+                delete field.options;
+                setIsValidOptions(false);
+                return;
+            }else {
+                setIsValidOptions(true);
+            }
         }
         field.questionnaireId = localStorage.getItem("questionnaireId");
         api.post("/fields", field).then((response) => {
@@ -34,7 +43,7 @@ const AddFieldModal = (props) => {
     const parseOptionsStr = (optionsStr) => {
         if (typeof optionsStr !== 'undefined') {
             optionsStr = optionsStr.trim();
-            if (!optionsStr.isEmpty) {
+            if (optionsStr && !optionsStr.isEmpty) {
                 const options = optionsStr.split('\n');
                 return options.map(elem => elem.trim()).filter(elm => elm);
             } else {
@@ -54,6 +63,9 @@ const AddFieldModal = (props) => {
                 <FieldForm
                     register={register}
                     errors={errors}
+                    isValidOptions={isValidOptions}
+                    setIsValidOptions={setIsValidOptions}
+                    parseOptionsStr={parseOptionsStr}
                 />
                 <Modal.Footer>
                     <Button variant="light" onClick={handleCloseModal}>
